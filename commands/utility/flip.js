@@ -18,6 +18,7 @@ const flips = [
 ];
 
 module.exports = {
+  category: "utility",
   data: new SlashCommandBuilder().setName("flip").setDescription("Flips!"),
   async execute(interaction) {
     await interaction.reply(flips[Math.floor(Math.random() * flips.length)]);
