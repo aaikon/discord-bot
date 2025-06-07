@@ -15,7 +15,7 @@ module.exports = (client) => {
       client.commands.set(command.data.name, command);
     } else {
       console.warn(
-        `[WARNING] The command at ${file} is missing a "data" or "execute" property.`
+        `[WARNING] The command in ${file} is missing a "data" or "execute" property.`
       );
     }
   }
