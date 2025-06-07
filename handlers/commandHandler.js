@@ -3,23 +3,20 @@ const path = require("path");
 
 module.exports = (client) => {
   const commandsPath = path.join(__dirname, "../commands");
-  const commandFolders = fs.readdirSync(commandsPath);
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
 
-  for (const folder of commandFolders) {
-    const folderPath = path.join(commandsPath, folder);
-    const commandFiles = fs
-      .readdirSync(folderPath)
-      .filter((file) => file.endsWith(".js"));
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
 
-    for (const file of commandFiles) {
-      const command = require(path.join(folderPath, file));
-      if ("data" in command && "execute" in command) {
-        client.commands.set(command.data.name, command);
-      } else {
-        console.warn(
-          `[WARNING] The command in ${file} is missing a "data" or "execute".`
-        );
-      }
+    if ("data" in command && "execute" in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      console.warn(
+        `[WARNING] The command at ${file} is missing a "data" or "execute" property.`
+      );
     }
   }
 };
