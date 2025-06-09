@@ -1,0 +1,50 @@
+[
+  {
+    "id": "001",
+    "name": "Green Slime",
+    "description": "A Nature-element slime",
+    "element": "nature",
+    "rarity": "1",
+    "isStarter": true
+  },
+  {
+    "id": "002",
+    "name": "Red Slime",
+    "description": "A Fire-element slime",
+    "element": "fire",
+    "rarity": "1",
+    "isStarter": true
+  },
+  {
+    "id": "003",
+    "name": "Blue Slime",
+    "description": "A Water-element slime",
+    "element": "water",
+    "rarity": "1",
+    "isStarter": true
+  },
+  {
+    "id": "004",
+    "name": "Yellow Slime",
+    "description": "A Electric-element slime",
+    "element": "electric",
+    "rarity": "1",
+    "isStarter": true
+  },
+  {
+    "id": "005",
+    "name": "Dark Slime",
+    "description": "A Dark-element slime",
+    "element": "dark",
+    "rarity": "1",
+    "isStarter": true
+  },
+  {
+    "id": "006",
+    "name": "Light Slime",
+    "description": "A Light-element slime",
+    "element": "light",
+    "rarity": "1",
+    "isStarter": true
+  }
+]
