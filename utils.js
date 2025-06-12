@@ -61,20 +61,10 @@ const renderDialogue = async (
   interaction,
   dialogue,
   currentId,
-  actions,
   context = {}
 ) => {
   const part = dialogue.parts.find((part) => part.id === currentId);
   if (!part) return;
-
-  // Handle action parts
-  if (part.action) {
-    const actionHandler = actions?.[part.action];
-    if (typeof actionHandler === "function") {
-      return await actionHandler(interaction);
-    }
-    return;
-  }
 
   const embed = new EmbedBuilder()
     .setTitle(dialogue.title)
@@ -86,9 +76,9 @@ const renderDialogue = async (
       .setCustomId("dialogue")
       .setPlaceholder("[select]")
       .addOptions(
-        part.options.map((opt) => ({
-          label: opt.label,
-          value: opt.next,
+        part.options.map((option, index) => ({
+          label: option.label,
+          value: index.toString(),
         }))
       );
 
@@ -112,8 +102,17 @@ const renderDialogue = async (
 
     collector.on("collect", async (i) => {
       await i.update({ components: [] });
-      const nextId = i.values[0];
-      await renderDialogue(i, dialogue, nextId, actions, context);
+
+      const selectedIndex = parseInt(i.values[0]);
+      const selectedOption = part.options[selectedIndex];
+
+      if (selectedOption?.action) {
+        await selectedOption.action(i);
+      }
+
+      if (selectedOption?.next) {
+        await renderDialogue(i, dialogue, selectedOption.next, context); // continue
+      }
     });
   }
 };

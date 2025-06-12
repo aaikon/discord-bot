@@ -16,15 +16,16 @@ const {
 module.exports = {
   cooldown: 5,
   data: new SlashCommandBuilder().setName("start").setDescription("Start."),
-
   async execute(interaction) {
+    const starters = await Units.findAll({ where: { isStarter: true } });
+
     const dialogue = {
       title: "The Beginning",
       parts: [
         {
           id: "intro1",
-          speaker: "Bob",
-          text: "Are you okay?",
+          speaker: "Narrator",
+          text: "Hello summoner. Are you ready to start your journey?",
           options: [
             { label: "Yes", next: "intro2" },
             { label: "No", next: "intro3" },
@@ -32,26 +33,35 @@ module.exports = {
         },
         {
           id: "intro2",
-          speaker: "Bob",
-          text: "Glad to hear it!",
-          options: [{ label: "Cool", next: "intro4" }],
+          speaker: "Narrator",
+          text: "Very well then. Choose your starter.",
+          options: starters.map((starter) => ({
+            label: formatUnitString(null, starter.name, null, null, null),
+            next: "intro4",
+            action: async (interaction) => {
+              console.log("Selected starter:", starter.name);
+              await Players.create({ playerId: interaction.user.id });
+              await PlayerUnits.create({
+                playerId: interaction.user.id,
+                unitId: starter.id,
+              });
+            },
+          })),
         },
         {
           id: "intro3",
-          speaker: "Bob",
-          text: "That's too bad...",
-          options: [{ label: "Cool", next: "intro4" }],
+          speaker: "Narrator",
+          text: "Come back when you're ready.",
         },
         {
           id: "intro4",
-          speaker: "Bob",
-          text: "XDDD",
-          options: [{ label: "Restart", next: "intro1" }],
+          speaker: "Narrator",
+          text: "Your journey begins now...",
         },
       ],
     };
 
-    await renderDialogue(interaction, dialogue, "intro1", {});
+    await renderDialogue(interaction, dialogue, "intro1");
     /*
     const starters = await Units.findAll({ where: { isStarter: true } });
 
