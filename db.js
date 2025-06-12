@@ -8,11 +8,6 @@ const sequelize = new Sequelize("database", "user", "password", {
 });
 
 const Units = sequelize.define("units", {
-  id: {
-    type: Sequelize.STRING,
-    unique: true,
-    primaryKey: true,
-  },
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -36,25 +31,29 @@ const Units = sequelize.define("units", {
   },
 });
 
-const PlayerUnits = sequelize.define("playerUnits", {
-  unitId: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    references: {
-      model: Units,
-      key: "id",
+const PlayerUnits = sequelize.define(
+  "playerUnits",
+  {
+    unitId: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      references: {
+        model: Units,
+        key: "id",
+      },
+    },
+    playerId: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    unitLevel: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
     },
   },
-  playerId: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  unitLevel: {
-    type: Sequelize.INTEGER,
-    defaultValue: 1,
-    allowNull: false,
-  },
-});
+  { noPrimaryKey: true }
+);
 
 const Players = sequelize.define("players", {
   playerId: {
@@ -69,6 +68,14 @@ const Players = sequelize.define("players", {
   },
 });
 
+const Quests = sequelize.define("quests", {
+  name: Sequelize.STRING,
+  description: Sequelize.TEXT,
+  minLevel: Sequelize.INTEGER,
+  maxUnits: Sequelize.INTEGER,
+  isActive: Sequelize.BOOLEAN,
+});
+
 Units.hasMany(PlayerUnits, { foreignKey: "unitId" });
 PlayerUnits.belongsTo(Units, { foreignKey: "unitId" });
 
@@ -77,4 +84,5 @@ module.exports = {
   Units,
   PlayerUnits,
   Players,
+  Quests,
 };

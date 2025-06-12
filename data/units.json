@@ -1,6 +1,5 @@
 [
   {
-    "id": "001",
     "name": "Green Slime",
     "description": "A Nature-element slime",
     "element": "nature",
@@ -8,7 +7,12 @@
     "isStarter": true
   },
   {
-    "id": "002",
+    "name": "Great Green Slime",
+    "description": "A great Nature-element slime",
+    "element": "nature",
+    "rarity": "2"
+  },
+  {
     "name": "Red Slime",
     "description": "A Fire-element slime",
     "element": "fire",
@@ -16,7 +20,12 @@
     "isStarter": true
   },
   {
-    "id": "003",
+    "name": "Great Red Slime",
+    "description": "A great Fire-element slime",
+    "element": "fire",
+    "rarity": "2"
+  },
+  {
     "name": "Blue Slime",
     "description": "A Water-element slime",
     "element": "water",
@@ -24,7 +33,12 @@
     "isStarter": true
   },
   {
-    "id": "004",
+    "name": "Great Blue Slime",
+    "description": "A great Water-element slime",
+    "element": "water",
+    "rarity": "2"
+  },
+  {
     "name": "Yellow Slime",
     "description": "A Electric-element slime",
     "element": "electric",
@@ -32,7 +46,12 @@
     "isStarter": true
   },
   {
-    "id": "005",
+    "name": "Great Yellow Slime",
+    "description": "A great Electric-element slime",
+    "element": "electric",
+    "rarity": "2"
+  },
+  {
     "name": "Dark Slime",
     "description": "A Dark-element slime",
     "element": "dark",
@@ -40,11 +59,22 @@
     "isStarter": true
   },
   {
-    "id": "006",
+    "name": "Great Dark Slime",
+    "description": "A great Dark-element slime",
+    "element": "dark",
+    "rarity": "2"
+  },
+  {
     "name": "Light Slime",
     "description": "A Light-element slime",
     "element": "light",
     "rarity": "1",
     "isStarter": true
+  },
+  {
+    "name": "Great Light Slime",
+    "description": "A great Light-element slime",
+    "element": "light",
+    "rarity": "2"
   }
 ]

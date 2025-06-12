@@ -5,17 +5,12 @@ const {
   GatewayIntentBits,
   MessageFlags,
 } = require("discord.js");
-const {
-  Client,
-  Collection,
-  Events,
-  GatewayIntentBits,
-  MessageFlags,
-} = require("discord.js");
 const { token } = require("./config.json");
 const loadCommands = require("./handlers/commandHandler");
-const { sequelize, Units } = require("./db.js");
+const { sequelize, Units, Quests } = require("./db.js");
+
 const unitData = require("./data/units.json");
+const questData = require("./data/quests.json");
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -25,13 +20,16 @@ client.cooldowns = new Collection();
 loadCommands(client);
 
 client.once(Events.ClientReady, async (readyClient) => {
-  await sequelize.sync({ force: false });
+  await sequelize.sync({ force: true });
 
-  const count = await Units.count();
-
-  if (count === 0) {
+  if ((await Units.count()) === 0) {
     await Units.bulkCreate(unitData);
-    console.log(`Seeded Units table with ${count} units.`);
+    console.log(`Seeded Units table.`);
+  }
+
+  if ((await Quests.count()) === 0) {
+    await Quests.bulkCreate(questData);
+    console.log(`Seeded Quests table.`);
   }
 
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);

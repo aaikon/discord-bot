@@ -6,28 +6,53 @@ const {
   MessageFlags,
   ComponentType,
 } = require("discord.js");
-
 const { Units, PlayerUnits, Players } = require("../db.js");
-const { elementToEmoji } = require("../utils.js");
+const {
+  elementToEmoji,
+  formatUnitString,
+  renderDialogue,
+} = require("../utils.js");
 
 module.exports = {
-  cooldown: 60,
-  data: new SlashCommandBuilder()
-    .setName("start")
-    .setDescription("Used to get your starter. Can only be used once."),
+  cooldown: 5,
+  data: new SlashCommandBuilder().setName("start").setDescription("Start."),
 
   async execute(interaction) {
-    const started = await Players.findOne({
-      where: { playerId: interaction.user.id },
-    });
+    const dialogue = {
+      title: "The Beginning",
+      parts: [
+        {
+          id: "intro1",
+          speaker: "Bob",
+          text: "Are you okay?",
+          options: [
+            { label: "Yes", next: "intro2" },
+            { label: "No", next: "intro3" },
+          ],
+        },
+        {
+          id: "intro2",
+          speaker: "Bob",
+          text: "Glad to hear it!",
+          options: [{ label: "Cool", next: "intro4" }],
+        },
+        {
+          id: "intro3",
+          speaker: "Bob",
+          text: "That's too bad...",
+          options: [{ label: "Cool", next: "intro4" }],
+        },
+        {
+          id: "intro4",
+          speaker: "Bob",
+          text: "XDDD",
+          options: [{ label: "Restart", next: "intro1" }],
+        },
+      ],
+    };
 
-    if (started) {
-      return interaction.reply({
-        content: "You have already started your journey",
-        flags: MessageFlags.Ephemeral,
-      });
-    }
-
+    await renderDialogue(interaction, dialogue, "intro1", {});
+    /*
     const starters = await Units.findAll({ where: { isStarter: true } });
 
     if (!starters.length) {
@@ -45,7 +70,7 @@ module.exports = {
           new StringSelectMenuOptionBuilder()
             .setLabel(unit.name)
             .setDescription(unit.description)
-            .setValue(unit.id)
+            .setValue(unit.id.toString())
             .setEmoji(elementToEmoji(unit.element))
         )
       );
@@ -65,7 +90,9 @@ module.exports = {
 
     collector.on("collect", async (i) => {
       const selection = i.values[0];
-      const selectedUnit = starters.find((unit) => unit.id === selection);
+      const selectedUnit = starters.find(
+        (unit) => unit.id.toString() === selection
+      );
 
       const disabledMenu = new StringSelectMenuBuilder()
         .setCustomId("starter")
@@ -90,5 +117,6 @@ module.exports = {
 
       collector.stop();
     });
+    */
   },
 };

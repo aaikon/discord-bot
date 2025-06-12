@@ -1,0 +1,9 @@
+[
+  {
+    "name": "The Grasslands",
+    "description": "The Grasslands.",
+    "minLevel": 1,
+    "maxUnits": 2,
+    "isActive": true
+  }
+]
