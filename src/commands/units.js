@@ -7,7 +7,7 @@ const {
 } = require("discord.js");
 const { where } = require("sequelize");
 const { PlayerUnits, Units } = require("../db");
-const { formatUnit } = require("../utils");
+const { formatUnit } = require("../../utils");
 
 module.exports = {
   cooldown: 5,

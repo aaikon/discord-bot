@@ -7,7 +7,7 @@ const {
   MessageFlags,
   deferUpdate,
 } = require("discord.js");
-const { PlayerUnits, Units } = require("./db");
+const { PlayerUnits, Units } = require("./src/db");
 
 const formatUnitString = (element, name, level, maxLevel, rarity) => {
   const elementEmoji = element ? elementToEmoji(element) : "";

@@ -11,7 +11,7 @@ const {
   elementToEmoji,
   formatUnitString,
   renderDialogue,
-} = require("../utils.js");
+} = require("../../utils.js");
 
 module.exports = {
   cooldown: 5,

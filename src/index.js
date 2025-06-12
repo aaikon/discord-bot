@@ -5,12 +5,12 @@ const {
   GatewayIntentBits,
   MessageFlags,
 } = require("discord.js");
-const { token } = require("./config.json");
-const loadCommands = require("./handlers/commandHandler");
+const { token } = require("../config.json");
+const loadCommands = require("./handlers/commandHandler.js");
 const { sequelize, Units, Quests } = require("./db.js");
 
-const unitData = require("./data/units.json");
-const questData = require("./data/quests.json");
+const unitData = require("../data/units.json");
+const questData = require("../data/quests.json");
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
