@@ -6,6 +6,7 @@ const {
   ComponentType,
   AttachmentBuilder,
 } = require("discord.js");
+const { type } = require("os");
 
 const path = require("path");
 
@@ -21,6 +22,8 @@ class DialogueBuilder {
   }
 
   addNode(node) {
+    if (!node.id) throw new Error("Node must have an ID.");
+    if (!node.text) console.warn(`Node ${node.id} is missing 'text'.`);
     this.nodes.push(node);
     return this;
   }
@@ -38,9 +41,11 @@ class DialogueBuilder {
 
     const embed = new EmbedBuilder().setTitle(this.title);
 
-    node.speaker
-      ? embed.addFields({ name: node.speaker, value: node.text })
-      : embed.setDescription(node.text);
+    if (node.speaker && typeof node.text === "string") {
+      embed.addFields({ name: node.speaker, value: node.text });
+    } else if (typeof node.text === "string") {
+      embed.setDescription(node.text);
+    }
 
     let imageFile = null;
     if (node.image) {

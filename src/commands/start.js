@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const { Units, PlayerUnits, Players } = require("../db.js");
 const { formatUnitString } = require("../utils.js");
 const { DialogueBuilder } = require("../builders/DialogueBuilder.js");
+const { NodeBuilder } = require("../builders/NodeBuilder.js");
 
 module.exports = {
   cooldown: 5,
@@ -11,46 +12,56 @@ module.exports = {
 
     const dialogue = new DialogueBuilder()
       .setTitle("The Beginning")
-      .addNode({
-        id: "intro1",
-        speaker: "Narrator",
-        text: "Hello summoner. Are you ready to start your journey?",
-        image: "./assets/test-icon.png",
-        options: [
-          { label: "Yes", next: "intro2" },
-          { label: "No", next: "intro3" },
-        ],
-      })
-      .addNode({
-        id: "intro2",
-        speaker: "Narrator",
-        text: "Very well then. Choose your starter.",
-        image: "./assets/test-icon.png",
-        options: starters.map((starter) => ({
-          label: formatUnitString(null, starter.name, null, null, null),
-          next: "intro4",
-          action: async (interaction) => {
-            console.log("Selected starter:", starter.name);
-            await Players.create({ playerId: interaction.user.id });
-            await PlayerUnits.create({
-              playerId: interaction.user.id,
-              unitId: starter.id,
-            });
-          },
-        })),
-      })
-      .addNode({
-        id: "intro3",
-        speaker: "Narrator",
-        text: "Come back when you're ready.",
-        image: "./assets/test-icon.png",
-      })
-      .addNode({
-        id: "intro4",
-        speaker: "Narrator",
-        text: "Your journey begins now...",
-        image: "./assets/test-icon.png",
-      });
+      .addNode(
+        new NodeBuilder()
+          .setId("intro1")
+          .setSpeaker("Narrator")
+          .setText("Hello summoner. Are you ready to start your journey?")
+          .setImage("./assets/test-icon.png")
+          .setOptions([
+            { label: "Yes", next: "intro2" },
+            { label: "No", next: "intro3" },
+          ])
+          .build()
+      )
+      .addNode(
+        new NodeBuilder()
+          .setId("intro2")
+          .setSpeaker("Narrator")
+          .setText("Very well then. Choose your starter.")
+          .setImage("./assets/test-icon.png")
+          .setOptions(
+            starters.map((starter) => ({
+              label: formatUnitString(null, starter.name, null, null, null),
+              next: "intro4",
+              action: async (interaction) => {
+                console.log("Selected starter:", starter.name);
+                await Players.create({ playerId: interaction.user.id });
+                await PlayerUnits.create({
+                  playerId: interaction.user.id,
+                  unitId: starter.id,
+                });
+              },
+            }))
+          )
+          .build()
+      )
+      .addNode(
+        new NodeBuilder()
+          .setId("intro3")
+          .setSpeaker("Narrator")
+          .setText("Come back when you're ready.")
+          .setImage("./assets/test-icon.png")
+          .build()
+      )
+      .addNode(
+        new NodeBuilder()
+          .setId("intro4")
+          .setSpeaker("Narrator")
+          .setText("Your journey begins now...")
+          .setImage("./assets/test-icon.png")
+          .build()
+      );
 
     await dialogue.start(interaction);
   },
