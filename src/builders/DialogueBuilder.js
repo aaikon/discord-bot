@@ -33,9 +33,13 @@ class DialogueBuilder {
     const node = this.nodes.find((node) => node.id === currentId);
     if (!node) return;
 
-    const embed = new EmbedBuilder()
-      .setTitle(this.title)
-      .addFields({ name: node.speaker, value: node.text });
+    const embed = new EmbedBuilder().setTitle(this.title);
+
+    node.speaker
+      ? embed.addFields({ name: node.speaker, value: node.text })
+      : embed.setDescription(node.text);
+
+    if (node.thumbnail) embed.setThumbnail(node.thumbnail);
 
     let row = null;
     if (Array.isArray(node.options) && node.options.length > 0) {
