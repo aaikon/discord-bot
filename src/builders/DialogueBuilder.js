@@ -4,7 +4,10 @@ const {
   ActionRowBuilder,
   MessageFlags,
   ComponentType,
+  AttachmentBuilder,
 } = require("discord.js");
+
+const path = require("path");
 
 class DialogueBuilder {
   constructor() {
@@ -23,7 +26,7 @@ class DialogueBuilder {
   }
 
   async start(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     await this.#render(interaction, this.nodes[0].id, {
       initialMessageSent: true,
     });
@@ -39,7 +42,11 @@ class DialogueBuilder {
       ? embed.addFields({ name: node.speaker, value: node.text })
       : embed.setDescription(node.text);
 
-    if (node.thumbnail) embed.setThumbnail(node.thumbnail);
+    let imageFile = null;
+    if (node.image) {
+      imageFile = new AttachmentBuilder(node.image);
+      embed.setImage(`attachment://${path.basename(node.image)}`);
+    }
 
     let row = null;
     if (Array.isArray(node.options) && node.options.length > 0) {
@@ -59,6 +66,7 @@ class DialogueBuilder {
     const sent = await interaction.followUp({
       embeds: [embed],
       components: row ? [row] : [],
+      files: imageFile ? [imageFile] : [],
       flags: MessageFlags.Ephemeral,
     });
 

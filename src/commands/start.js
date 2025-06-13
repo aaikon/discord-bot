@@ -1,11 +1,4 @@
-const {
-  SlashCommandBuilder,
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-  MessageFlags,
-  ComponentType,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { Units, PlayerUnits, Players } = require("../db.js");
 const { formatUnitString } = require("../utils.js");
 const { DialogueBuilder } = require("../builders/DialogueBuilder.js");
@@ -22,6 +15,7 @@ module.exports = {
         id: "intro1",
         speaker: "Narrator",
         text: "Hello summoner. Are you ready to start your journey?",
+        image: "./assets/test-icon.png",
         options: [
           { label: "Yes", next: "intro2" },
           { label: "No", next: "intro3" },
@@ -31,6 +25,7 @@ module.exports = {
         id: "intro2",
         speaker: "Narrator",
         text: "Very well then. Choose your starter.",
+        image: "./assets/test-icon.png",
         options: starters.map((starter) => ({
           label: formatUnitString(null, starter.name, null, null, null),
           next: "intro4",
@@ -48,11 +43,13 @@ module.exports = {
         id: "intro3",
         speaker: "Narrator",
         text: "Come back when you're ready.",
+        image: "./assets/test-icon.png",
       })
       .addNode({
         id: "intro4",
         speaker: "Narrator",
         text: "Your journey begins now...",
+        image: "./assets/test-icon.png",
       });
 
     await dialogue.start(interaction);
