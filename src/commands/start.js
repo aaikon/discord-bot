@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const { Units, PlayerUnits, Players } = require("../db.js");
 const { formatUnitString } = require("../utils.js");
 const { DialogueBuilder } = require("../builders/DialogueBuilder.js");
-const { NodeBuilder } = require("../builders/NodeBuilder.js");
+const { DialogueNodeBuilder } = require("../builders/DialogueNodeBuilder.js");
 
 module.exports = {
   cooldown: 5,
@@ -13,7 +13,7 @@ module.exports = {
     const dialogue = new DialogueBuilder()
       .setTitle("The Beginning")
       .addNode(
-        new NodeBuilder()
+        new DialogueNodeBuilder()
           .setId("intro1")
           .setSpeaker("Narrator")
           .setText("Hello summoner. Are you ready to start your journey?")
@@ -25,7 +25,7 @@ module.exports = {
           .build()
       )
       .addNode(
-        new NodeBuilder()
+        new DialogueNodeBuilder()
           .setId("intro2")
           .setSpeaker("Narrator")
           .setText("Very well then. Choose your starter.")
@@ -47,19 +47,32 @@ module.exports = {
           .build()
       )
       .addNode(
-        new NodeBuilder()
+        new DialogueNodeBuilder()
           .setId("intro3")
           .setSpeaker("Narrator")
           .setText("Come back when you're ready.")
           .setImage("./assets/test-icon.png")
+          .setAutoNext("intro5", 5000)
           .build()
       )
       .addNode(
-        new NodeBuilder()
+        new DialogueNodeBuilder()
           .setId("intro4")
           .setSpeaker("Narrator")
           .setText("Your journey begins now...")
           .setImage("./assets/test-icon.png")
+          .build()
+      )
+      .addNode(
+        new DialogueNodeBuilder()
+          .setId("intro5")
+          .setSpeaker("Narrator")
+          .setText("Unless you've changed your mind?")
+          .setImage("./assets/test-icon.png")
+          .setOptions([
+            { label: "Yes", next: "intro2" },
+            { label: "No", next: null },
+          ])
           .build()
       );
 

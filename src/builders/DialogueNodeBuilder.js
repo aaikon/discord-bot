@@ -1,4 +1,4 @@
-class NodeBuilder {
+class DialogueNodeBuilder {
   constructor() {
     this.node = {};
   }
@@ -28,11 +28,16 @@ class NodeBuilder {
     return this;
   }
 
+  setAutoNext(nextId, delayMs = 3000) {
+    this.node.autoNext = { next: nextId, delay: delayMs };
+    return this;
+  }
+
   build() {
     return this.node;
   }
 }
 
 module.exports = {
-  NodeBuilder,
+  DialogueNodeBuilder,
 };

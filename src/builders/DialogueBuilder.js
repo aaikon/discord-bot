@@ -104,6 +104,10 @@ class DialogueBuilder {
         if (selectedOption?.next)
           await this.#render(i, selectedOption.next, context);
       });
+    } else if (node.autoNext.next) {
+      setTimeout(async () => {
+        await this.#render(interaction, node.autoNext.next, context);
+      }, node.autoNext.delay);
     }
   }
 }
